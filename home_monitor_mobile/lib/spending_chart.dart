@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_notion_budget/item_model.dart';
-import 'package:flutter_notion_budget/main.dart';
+import './item_model.dart';
+import './main.dart';
 
 class SpendingChart extends StatelessWidget {
   final List<Item> items;
