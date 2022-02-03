@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_notion_budget/models/MeterReading.dart';
 import './budget_repository.dart';
 import './failure_model.dart';
 import './item_model.dart';
@@ -7,7 +8,6 @@ import './spending_chart.dart';
 import 'package:intl/intl.dart';
 
 void main() async {
-  await dotenv.load(fileName: '.env');
   runApp(MyApp());
 }
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Notion Budget Tracker',
+      title: 'Water Monitor',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.white,
@@ -31,37 +31,35 @@ class BudgetScreen extends StatefulWidget {
 }
 
 class _BudgetScreenState extends State<BudgetScreen> {
-  late Future<List<Item>> _futureItems;
+  late Future<List<MeterReading>> _futureItems;
 
   @override
   void initState() {
     super.initState();
-    _futureItems = BudgetRepository().getItems();
+    _futureItems = BudgetRepository().getMeterReadings();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Budget Tracker'),
+        title: const Text('Water Monitor'),
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          _futureItems = BudgetRepository().getItems();
+          _futureItems = BudgetRepository().getMeterReadings();
           setState(() {});
         },
-        child: FutureBuilder<List<Item>>(
+        child: FutureBuilder<List<MeterReading>>(
           future: _futureItems,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               // Show pie chart and list view of items.
               final items = snapshot.data!;
               return ListView.builder(
-                itemCount: items.length + 1,
+                itemCount: items.length,
                 itemBuilder: (BuildContext context, int index) {
-                  if (index == 0) return SpendingChart(items: items);
-
-                  final item = items[index - 1];
+                  final item = items[index];
                   return Container(
                     margin: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
@@ -69,7 +67,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                       borderRadius: BorderRadius.circular(10.0),
                       border: Border.all(
                         width: 2.0,
-                        color: getCategoryColor(item.category),
+                        color: getCategoryColor("Food"),
                       ),
                       boxShadow: const [
                         BoxShadow(
@@ -80,12 +78,12 @@ class _BudgetScreenState extends State<BudgetScreen> {
                       ],
                     ),
                     child: ListTile(
-                      title: Text(item.name),
+                      title: Text(item.meterNumber),
                       subtitle: Text(
-                        '${item.category} • ${DateFormat.yMd().format(item.date)}',
+                        '${item.reading} • ${item.date}',
                       ),
                       trailing: Text(
-                        '-\$${item.price.toStringAsFixed(2)}',
+                        '${(item.reading * 3500).toStringAsFixed(2)}/=',
                       ),
                     ),
                   );

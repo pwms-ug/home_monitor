@@ -1,13 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_notion_budget/failure_model.dart';
 import 'package:http/http.dart' as http;
-import './item_model.dart';
+
+import 'models/MeterReading.dart';
 
 class BudgetRepository {
-  static const String _baseUrl = 'https://api.notion.com/v1/';
+  static const String _baseUrl = 'https://monitor4home.herokuapp.com/api/';
 
   final http.Client _client;
 
@@ -17,23 +16,20 @@ class BudgetRepository {
     _client.close();
   }
 
-  Future<List<Item>> getItems() async {
+  Future<List<MeterReading>> getMeterReadings() async {
     try {
-      final url =
-          '${_baseUrl}databases/${dotenv.env['NOTION_DATABASE_ID']}/query';
-      final response = await _client.post(
+      final url = '${_baseUrl}meter_readings/readings';
+      final response = await _client.get(
         Uri.parse(url),
-        headers: {
-          HttpHeaders.authorizationHeader:
-              'Bearer ${dotenv.env['NOTION_API_KEY']}',
-          'Notion-Version': '2021-05-13',
-        },
+        headers: {},
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as Map<String, dynamic>;
-        return (data['results'] as List).map((e) => Item.fromMap(e)).toList()
-          ..sort((a, b) => b.date.compareTo(a.date));
+        final data = jsonDecode(response.body) as List<dynamic>;
+        return data.map((e) {
+          print(e);
+          return MeterReading.fromMap(e);
+        }).toList();
       } else {
         throw const Failure(message: 'Something went wrong!');
       }
