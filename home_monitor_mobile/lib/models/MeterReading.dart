@@ -1,8 +1,10 @@
+import 'dart:ffi';
+
 class MeterReading {
   final String id;
   final String meterNumber;
   final String date;
-  final int reading;
+  final double reading;
   final String location;
 
   MeterReading({
@@ -17,7 +19,7 @@ class MeterReading {
     return MeterReading(
         id: map["_id"],
         meterNumber: map["meterNumber"] ?? "",
-        reading: map["reading"] ?? 0,
+        reading: double.parse(map["reading"] ?? 0.0 ),
         location: map["location"] ?? "",
         date: map["date"] ?? ""
     );
