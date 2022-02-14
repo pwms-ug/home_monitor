@@ -61,9 +61,6 @@ class _MeterReadingScreenState extends State<MeterReadingScreen> {
                       subtitle: Text(
                         '${item.reading} • ${item.date}',
                       ),
-                      trailing: Text(
-                        '${(item.reading * 3500).toStringAsFixed(2)}/=',
-                      ),
                     ),
                   );
                 },

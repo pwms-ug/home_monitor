@@ -19,7 +19,7 @@ class MeterReading {
     return MeterReading(
         id: map["_id"],
         meterNumber: map["meterNumber"] ?? "",
-        reading: double.parse(map["reading"] ?? 0.0 ),
+        reading: double.parse((map["reading"]).toString()),
         location: map["location"] ?? "",
         date: map["date"] ?? ""
     );
