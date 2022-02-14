@@ -1,4 +1,4 @@
-const dateFormat = require('dateformat');
+import dateFormat from 'dateformat';
 
 function MeterReadingController(MeterReading) {
   function post(req, res) {
