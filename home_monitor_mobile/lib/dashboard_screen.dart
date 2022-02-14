@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_notion_budget/configure_meter_screen.dart';
+
+import 'meter_reading.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -22,8 +25,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               InkWell(
                 onTap: () => {
-
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (builder) => AddMeterScreen(),
+                    ),
+                  )
                 },
+                child: Card(
+                  child: Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          size: 34,
+                        ),
+                        Text(
+                          "Configure\nMeter",
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () => {},
                 child: Card(
                   child: Container(
                     child: Column(
@@ -42,27 +71,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               InkWell(
                 onTap: () => {
-
-                },
-                child: Card(
-                  child: Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.add,
-                          size: 34,
-                        ),
-                        Text("Add Meter")
-                      ],
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (builder) => MeterReadingScreen(),
                     ),
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () => {
-
+                  )
                 },
                 child: Card(
                   child: Container(
@@ -74,7 +88,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Icons.read_more,
                           size: 34,
                         ),
-                        Text("Meter\nReadings", textAlign: TextAlign.center,)
+                        Text(
+                          "Meter\nReadings",
+                          textAlign: TextAlign.center,
+                        )
                       ],
                     ),
                   ),

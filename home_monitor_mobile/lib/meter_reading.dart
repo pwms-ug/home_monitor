@@ -4,12 +4,12 @@ import 'budget_repository.dart';
 import 'failure_model.dart';
 import 'models/MeterReading.dart';
 
-class BudgetScreen extends StatefulWidget {
+class MeterReadingScreen extends StatefulWidget {
   @override
-  _BudgetScreenState createState() => _BudgetScreenState();
+  _MeterReadingScreenState createState() => _MeterReadingScreenState();
 }
 
-class _BudgetScreenState extends State<BudgetScreen> {
+class _MeterReadingScreenState extends State<MeterReadingScreen> {
   late Future<List<MeterReading>> _futureItems;
 
   @override
