@@ -3,13 +3,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const Book = require('./models/bookModel');
-const MeterReading = require('./models/MeterReadingModel')
-const MeterReadingRouter = require('./routes/MeterReadingRouter')(MeterReading)
+const MeterReading = require('./models/MeterReadingModel');
+const MeterReadingRouter = require('./routes/MeterReadingRouter')(MeterReading);
 const bookRouter = require('./routes/bookRouter')(Book);
 
 const app = express();
 const port = process.env.PORT || 3000;
-mongoose.connect('mongodb+srv://express_backend:express_backend@cluster0.wdx4a.mongodb.net/express_backend?retryWrites=true&w=majority');
+mongoose.connect('mongodb+srv://express_backend:express_backend@cluster0.wdx4a.mongodb.net/express_backend_v2?retryWrites=true&w=majority');
 const db = mongoose.connection;
 
 app.use(bodyParser.urlencoded({ extended: true }));
