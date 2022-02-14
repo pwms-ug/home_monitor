@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import './item_model.dart';
 import './main.dart';
+import 'meter_reading.dart';
 
 class SpendingChart extends StatelessWidget {
   final List<Item> items;
