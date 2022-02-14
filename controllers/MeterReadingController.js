@@ -1,14 +1,9 @@
+const dateFormat = require('dateformat');
+
 function MeterReadingController(MeterReading) {
   function post(req, res) {
     const meterReading = new MeterReading(req.body);
-    const d = new Date();
-    const dformat = `${[d.getMonth() + 1,
-      d.getDate(),
-      d.getFullYear()].join('/')} ${
-      [d.getHours(),
-        d.getMinutes(),
-        d.getSeconds()].join(':')}`;
-    meterReading.date = dformat;
+    meterReading.date = dateFormat(Date, 'isoDateTime');
     meterReading.location = 'Kyengera';
     meterReading.save();
     res.status(201);

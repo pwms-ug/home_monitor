@@ -3,7 +3,10 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:flutter_notion_budget/configure_meter_screen.dart';
 
+import 'budget_repository.dart';
+import 'failure_model.dart';
 import 'meter_reading_screen.dart';
+import 'models/MeterReading.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -116,7 +119,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
-class SimpleTimeSeriesChart extends StatelessWidget {
+class SimpleTimeSeriesChart extends StatefulWidget {
   final List<Series<dynamic, DateTime>> seriesList;
 
   SimpleTimeSeriesChart(this.seriesList);
@@ -129,13 +132,7 @@ class SimpleTimeSeriesChart extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return new charts.TimeSeriesChart(
-      seriesList,
-      animate: true,
-      dateTimeFactory: const charts.LocalDateTimeFactory(),
-    );
-  }
+  State<SimpleTimeSeriesChart> createState() => _SimpleTimeSeriesChartState();
 
   /// Create one series with sample hard coded data.
   static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
@@ -155,6 +152,40 @@ class SimpleTimeSeriesChart extends StatelessWidget {
         data: data,
       )
     ];
+  }
+}
+
+class _SimpleTimeSeriesChartState extends State<SimpleTimeSeriesChart> {
+  late Future<List<MeterReading>> _futureItems;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureItems = BudgetRepository().getMeterReadings();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: _futureItems,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final items = snapshot.data! as List<MeterReading>;
+            var date = DateTime.parse(items[0].date);
+            print("=================================");
+            print(date);
+            return new charts.TimeSeriesChart(
+              widget.seriesList,
+              animate: true,
+              dateTimeFactory: const charts.LocalDateTimeFactory(),
+            );
+          } else if (snapshot.hasError) {
+            final failure = snapshot.error as Failure;
+            return Center(child: Text(failure.message));
+          }
+
+          return const Center(child: CircularProgressIndicator());
+        });
   }
 }
 

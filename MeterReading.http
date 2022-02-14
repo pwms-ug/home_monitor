@@ -8,7 +8,5 @@ Content-Type: application/json
 
 {
   "meterNumber": "8927364",
-  "date": "03-09-2021",
-  "reading": 67.0,
-  "location": "Kyengera"
+  "reading": 100.78
 }
