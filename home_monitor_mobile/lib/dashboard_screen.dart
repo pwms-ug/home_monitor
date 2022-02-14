@@ -166,26 +166,54 @@ class _SimpleTimeSeriesChartState extends State<SimpleTimeSeriesChart> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _futureItems,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final items = snapshot.data! as List<MeterReading>;
-            var date = DateTime.parse(items[0].date);
-            print("=================================");
-            print(date);
-            return new charts.TimeSeriesChart(
-              widget.seriesList,
-              animate: true,
-              dateTimeFactory: const charts.LocalDateTimeFactory(),
-            );
-          } else if (snapshot.hasError) {
-            final failure = snapshot.error as Failure;
-            return Center(child: Text(failure.message));
-          }
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: FutureBuilder(
+              future: _futureItems,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final items = snapshot.data! as List<MeterReading>;
+                  var data = items.map((reading) {
+                    return TimeSeriesSales(
+                        DateTime.parse(reading.date), reading.reading.toInt());
+                  }).toList();
+                  return new charts.TimeSeriesChart(
+                    [
+                      new charts.Series<TimeSeriesSales, DateTime>(
+                        id: 'Sales',
+                        colorFn: (_, __) =>
+                            charts.MaterialPalette.blue.shadeDefault,
+                        domainFn: (TimeSeriesSales sales, _) => sales.time,
+                        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+                        data: data,
+                      )
+                    ],
+                    animate: true,
+                    dateTimeFactory: const charts.LocalDateTimeFactory(),
+                  );
+                } else if (snapshot.hasError) {
+                  final failure = snapshot.error as Failure;
+                  return Center(child: Text(failure.message));
+                }
 
-          return const Center(child: CircularProgressIndicator());
-        });
+                return const Center(child: CircularProgressIndicator());
+              }),
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: IconButton(
+            onPressed: () {
+              _futureItems = BudgetRepository().getMeterReadings();
+              setState(() {});
+            },
+            icon: Icon(Icons.refresh),
+          ),
+        ),
+      ],
+    );
   }
 }
 
