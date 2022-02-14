@@ -1,9 +1,7 @@
-import dateFormat from 'dateformat';
-
 function MeterReadingController(MeterReading) {
   function post(req, res) {
     const meterReading = new MeterReading(req.body);
-    meterReading.date = dateFormat(Date, 'isoDateTime');
+    meterReading.date = new Date.toLocaleString();
     meterReading.location = 'Kyengera';
     meterReading.save();
     res.status(201);

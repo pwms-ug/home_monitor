@@ -21,7 +21,6 @@
   "homepage": "https://github.com/simonojok19/node-rest-api#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "dateformat": "^5.0.2",
     "express": "^4.17.1",
     "mocha": "^6.2.2",
     "mongoose": "^5.7.7",
