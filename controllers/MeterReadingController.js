@@ -1,7 +1,7 @@
 function MeterReadingController(MeterReading) {
   function post(req, res) {
     const meterReading = new MeterReading(req.body);
-    meterReading.date = Date.toLocaleString();
+    meterReading.date = new Date().toISOString();
     meterReading.location = 'Kyengera';
     meterReading.save();
     res.status(201);
