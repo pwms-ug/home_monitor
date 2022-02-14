@@ -1,26 +1,28 @@
 function MeterReadingController(MeterReading) {
-    function post(req, res) {
-        const meterReading = new MeterReading(req.body)
-        meterReading.save()
-        res.status(201)
-        return res.json(meterReading);
+  function post(req, res) {
+    const meterReading = new MeterReading(req.body);
+    meterReading.date = new Date();
+    meterReading.location = 'Kyengera';
+    meterReading.save();
+    res.status(201);
+    return res.json(meterReading);
+  }
+
+  function get(req, res) {
+    const query = {};
+    if (req.query.meterNumber) {
+      query.meterNumber = req.query.meterNumber;
     }
 
-    function get(req, res) {
-        const query = {}
-        if(req.query.meterNumber) {
-            query.meterNumber = req.query.meterNumber
-        }
+    MeterReading.find(query, (error, meterReading) => {
+      if (error) {
+        return res.send(error);
+      }
+      return res.send(meterReading);
+    });
+  }
 
-        MeterReading.find(query, (error, meterReading) => {
-            if (error) {
-                return res.send(error)
-            }
-            return res.send(meterReading)
-        })
-    }
-
-    return { post, get }
+  return { post, get };
 }
 
-module.exports = MeterReadingController
+module.exports = MeterReadingController;

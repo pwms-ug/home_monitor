@@ -7,8 +7,8 @@ POST https://monitor4home.herokuapp.com/api/meter_readings/readings
 Content-Type: application/json
 
 {
-  "meterNumber": "8765454344773434",
+  "meterNumber": "8927364",
   "date": "03-09-2021",
   "reading": 67.0,
-  "location": "Block D Level 7"
+  "location": "Kyengera"
 }
