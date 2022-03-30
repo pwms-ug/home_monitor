@@ -5,11 +5,11 @@ function MeterReadingRoutes(Order) {
     const orderRouter = express.Router()
     const orderController = OrderController(Order)
 
-    orderRouter.route('/orders')
+    orderRouter.route('/')
         .get(orderController.get)
         .post(orderController.post)
 
-    orderRouter.use('/orders/:id', (req, res, next) => {
+    orderRouter.use('/:id', (req, res, next) => {
         Order.findById(req.params.id, (error, order) => {
             if (error) {
                 return res.send(error)
