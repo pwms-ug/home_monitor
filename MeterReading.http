@@ -3,10 +3,10 @@ Accept: application/json
 
 ###
 
-POST http://localhost:3000/api/meter_readings/readings
+POST https://monitor4home.herokuapp.com/api/meter_readings/readings
 Content-Type: application/json
 
 {
   "meterNumber": "8927364",
-  "reading": 100.78
+  "reading": 101.78
 }
